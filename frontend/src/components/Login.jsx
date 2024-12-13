@@ -12,21 +12,27 @@ const Login = ({ handleLogin }) => {
     e.preventDefault();
 
     try {
-      // Sending the POST request to login API endpoint
+      // Send the POST request with username and password
       const response = await axios.post('https://backend-discussion-z111.onrender.com/users/login', {
         username,
         password,
       });
 
-      // If the response contains a token, update login state and navigate
+      // Check if the response contains a token
       if (response.data.token) {
-        handleLogin(true, response.data.token); // Save token and update login state
-        navigate('/discussion'); // Redirect to discussion page
+        // Save the token to localStorage for persistence
+        localStorage.setItem('authToken', response.data.token);
+
+        // Notify parent component of successful login
+        handleLogin(true, response.data.token);
+
+        // Navigate to the Discussion page
+        navigate('/discussion');
       } else {
-        setError('Invalid credentials'); // Handle incorrect username/password
+        setError('Invalid credentials');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.'); // Handle server or network errors
+      setError('An error occurred. Please try again.');
     }
   };
 
@@ -56,12 +62,11 @@ const Login = ({ handleLogin }) => {
         </div>
         <button type="submit" style={styles.button}>Login</button>
       </form>
-      {error && <p style={styles.error}>{error}</p>} {/* Display error message if there's an issue */}
+      {error && <p style={styles.error}>{error}</p>}
     </div>
   );
 };
 
-// Inline styles for the component
 const styles = {
   container: {
     textAlign: 'center',
