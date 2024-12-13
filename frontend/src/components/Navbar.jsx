@@ -10,6 +10,7 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           <>
             <Link to="/login" style={styles.link}>Login</Link>
             <Link to="/register" style={styles.link}>Register</Link>
+            <Link to="/discussion" style={styles.link}>Discussion</Link>
           </>
         ) : (
           <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>

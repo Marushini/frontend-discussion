@@ -12,21 +12,21 @@ const Login = ({ handleLogin }) => {
     e.preventDefault();
 
     try {
-      // Replace with your actual login API endpoint
+      // Sending the POST request to login API endpoint
       const response = await axios.post('https://backend-discussion-z111.onrender.com/users/login', {
         username,
         password,
       });
 
-      // Assuming the response contains a token
+      // If the response contains a token, update login state and navigate
       if (response.data.token) {
-        handleLogin(true, response.data.token);
-        navigate('/discussion');  // Redirect to the Discussion page after successful login
+        handleLogin(true, response.data.token); // Save token and update login state
+        navigate('/discussion'); // Redirect to discussion page
       } else {
-        setError('Invalid credentials'); // Display error message for invalid credentials
+        setError('Invalid credentials'); // Handle incorrect username/password
       }
     } catch (err) {
-      setError('An error occurred. Please try again.'); // Handle any other errors
+      setError('An error occurred. Please try again.'); // Handle server or network errors
     }
   };
 
@@ -41,6 +41,7 @@ const Login = ({ handleLogin }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             style={styles.input}
+            required
           />
         </div>
         <div>
@@ -50,15 +51,17 @@ const Login = ({ handleLogin }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={styles.input}
+            required
           />
         </div>
         <button type="submit" style={styles.button}>Login</button>
       </form>
-      {error && <p style={styles.error}>{error}</p>} {/* Show error message if credentials are incorrect */}
+      {error && <p style={styles.error}>{error}</p>} {/* Display error message if there's an issue */}
     </div>
   );
 };
 
+// Inline styles for the component
 const styles = {
   container: {
     textAlign: 'center',
@@ -74,9 +77,12 @@ const styles = {
     backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
   },
   error: {
     color: 'red',
+    marginTop: '10px',
   },
 };
 
