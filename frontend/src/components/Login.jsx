@@ -38,8 +38,8 @@ const Login = ({ handleLogin }) => {
 
   return (
     <div style={styles.container}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 style={styles.heading}>Login</h2>
+      <form onSubmit={handleSubmit} style={styles.form}>
         <div>
           <input
             type="text"
@@ -70,24 +70,104 @@ const Login = ({ handleLogin }) => {
 const styles = {
   container: {
     textAlign: 'center',
-    marginTop: '50px',
+    marginTop: '10px',
+    backgroundColor: '#add8e6', // Light blue background color
+    paddingBottom: '300px',
+    alignItems: 'center',
+    borderRadius: '8px',
+  },
+  heading: {
+    fontSize: '5rem',
+    color: '#333',
+    marginBottom: '10px',
+    padding: '10px',
+  
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: '10px',
+    padding: '15px',
+     backgroundColor: '#fff',
   },
   input: {
     marginBottom: '10px',
-    padding: '10px',
-    width: '200px',
+    padding: '15px',
+    width: '300px',
+    borderRadius: '30px',
+    border: '1px solid #ccc',
   },
   button: {
-    padding: '10px 20px',
+    padding: '20px 30px',
     backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
+    width: '250px',
+    marginTop: '10px',
   },
   error: {
     color: 'red',
     marginTop: '10px',
+  },
+
+  // Responsive Styles (Mobile-first approach)
+  '@media (max-width: 1200px)': {
+    heading: {
+      fontSize: '2.5rem',
+    },
+    input: {
+      width: '220px',
+    },
+    button: {
+      width: '220px',
+    },
+  },
+
+  '@media (max-width: 1024px)': {
+    heading: {
+      fontSize: '2rem',
+    },
+    input: {
+      width: '200px',
+    },
+    button: {
+      width: '200px',
+    },
+  },
+
+  '@media (max-width: 768px)': {
+    container: {
+      marginTop: '30px',
+      padding: '15px',
+    },
+    heading: {
+      fontSize: '1.8rem',
+    },
+    input: {
+      width: '180px',
+    },
+    button: {
+      width: '180px',
+    },
+  },
+
+  '@media (max-width: 480px)': {
+    container: {
+      marginTop: '20px',
+      padding: '10px',
+    },
+    heading: {
+      fontSize: '1.5rem',
+    },
+    input: {
+      width: '100%',
+    },
+    button: {
+      width: '100%',
+    },
   },
 };
 

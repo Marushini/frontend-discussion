@@ -1,0 +1,72 @@
+/* Home.css */
+
+/* Default Styles */
+.container {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .heading {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .paragraph {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+    max-width: 600px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 1200px) {
+    .heading {
+      font-size: 2rem;
+    }
+    .paragraph {
+      font-size: 1.1rem;
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .heading {
+      font-size: 1.8rem;
+    }
+    .paragraph {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      margin-top: 30px;
+    }
+    .heading {
+      font-size: 1.5rem;
+    }
+    .paragraph {
+      font-size: 0.9rem;
+      max-width: 500px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      margin-top: 20px;
+      padding: 10px;
+    }
+    .heading {
+      font-size: 1.3rem;
+    }
+    .paragraph {
+      font-size: 0.85rem;
+      max-width: 100%;
+    }
+  }
+  
