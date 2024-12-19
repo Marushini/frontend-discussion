@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 const Discussion = ({ token }) => {
@@ -175,21 +174,19 @@ const Discussion = ({ token }) => {
   );
 };
 
-
- 
 const styles = {
   container: {
     maxWidth: '800px',
     margin: '0 auto',
     padding: '20px',
-    backgroundColor: '#add8e6', // Blue background color
+    backgroundColor: '#add8e6',
     borderRadius: '8px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    marginTop: '70px', // To prevent content from being hidden behind navbar
+    marginTop: '70px',
   },
   title: {
     textAlign: 'center',
-    color: '#000', // Text color for contrast on blue background
+    color: '#000',
     marginBottom: '20px',
   },
   form: {
@@ -215,7 +212,7 @@ const styles = {
   },
   button: {
     padding: '12px 20px',
-    backgroundColor: '#007bff', // Blue button color to match background
+    backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
@@ -247,7 +244,7 @@ const styles = {
     gap: '10px',
     marginTop: '10px',
   },
-  repliees: {
+  replies: {
     marginTop: '20px',
     paddingLeft: '20px',
   },
