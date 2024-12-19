@@ -94,9 +94,31 @@ const Discussion = ({ token }) => {
     setPosts(posts.map(post => post._id === postId ? updatedPost : post));
   };
 
+  // Handle login (for saving username in localStorage)
+  const handleLogin = async (username, password) => {
+    const response = await fetch('https://backend-discussion-z111.onrender.com/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Save username to localStorage upon successful login
+      localStorage.setItem('username', data.username);
+      setError('');  // Clear error if login is successful
+      // Optionally, redirect or update state for logged-in user
+    } else {
+      setError('Login failed');
+    }
+  };
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Discussion Forum</h1>
+      {/* Post submission form */}
       <form onSubmit={handlePostSubmit} style={styles.form}>
         <input
           type="text"
@@ -179,14 +201,14 @@ const styles = {
     maxWidth: '800px',
     margin: '0 auto',
     padding: '20px',
-    backgroundColor: '#add8e6',
+    backgroundColor: '#add8e6', // Blue background color
     borderRadius: '8px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
     marginTop: '70px',
   },
   title: {
     textAlign: 'center',
-    color: '#000',
+    color: '#000', // Text color for contrast on blue background
     marginBottom: '20px',
   },
   form: {
@@ -212,7 +234,7 @@ const styles = {
   },
   button: {
     padding: '12px 20px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#007bff', // Blue button color to match background
     color: 'white',
     border: 'none',
     borderRadius: '4px',
