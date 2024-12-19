@@ -6,10 +6,13 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
       // Send the POST request with username and password
@@ -27,7 +30,9 @@ const Login = () => {
         setError('Invalid credentials');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError(err.response?.data?.message || 'An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,7 +60,9 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit" style={styles.button}>Login</button>
+        <button type="submit" style={styles.button} disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
       {error && <p style={styles.error}>{error}</p>}
     </div>
@@ -65,42 +72,38 @@ const Login = () => {
 const styles = {
   container: {
     textAlign: 'center',
-    marginTop: '10px',
-    backgroundColor: '#add8e6', // Light blue background color
-    paddingBottom: '300px',
-    alignItems: 'center',
+    marginTop: '20px',
+    backgroundColor: '#f0f8ff', // Alice blue background color
+    padding: '20px',
     borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   },
   heading: {
-    fontSize: '5rem',
+    fontSize: '2.5rem',
     color: '#333',
-    marginBottom: '10px',
-    padding: '10px',
+    marginBottom: '20px',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: '10px',
-    padding: '15px',
-    backgroundColor: '#fff',
   },
   input: {
-    marginBottom: '10px',
-    padding: '15px',
+    marginBottom: '15px',
+    padding: '10px',
     width: '300px',
-    borderRadius: '30px',
+    borderRadius: '4px',
     border: '1px solid #ccc',
   },
   button: {
-    padding: '20px 30px',
+    padding: '10px 20px',
     backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
-    width: '250px',
-    marginTop: '10px',
+    width: '150px',
+    fontWeight: 'bold',
   },
   error: {
     color: 'red',
