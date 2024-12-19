@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const Discussion = ({ token }) => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: '', description: '' });
-  const [newReply, setNewReply] = useState({ replyText: '', postId: '' });
+  const [newReply, setNewReply] = useState({ content: '', postId: '' });
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -71,11 +71,11 @@ const Discussion = ({ token }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          replyText: newReply.replyText,
-          repliedBy: username,
+          content: newReply.content,
+          createdBy: username,
         }),
       });
-      setNewReply({ replyText: '', postId: '' });
+      setNewReply({ content: '', postId: '' });
       fetchPosts();
     } catch (err) {
       setError('Failed to post reply');
@@ -149,8 +149,8 @@ const Discussion = ({ token }) => {
             {newReply.postId === post._id && (
               <form onSubmit={(e) => handleReplySubmit(e, post._id)} style={styles.replyForm}>
                 <textarea
-                  value={newReply.replyText}
-                  onChange={(e) => setNewReply({ ...newReply, replyText: e.target.value })}
+                  value={newReply.content}
+                  onChange={(e) => setNewReply({ ...newReply, content: e.target.value })}
                   placeholder="Write your reply"
                   style={styles.textarea}
                 />
@@ -159,11 +159,11 @@ const Discussion = ({ token }) => {
             )}
 
             {/* Display all replies */}
-            <div style={styles.replies}>
+            <div style={styles.repliees}>
               {post.replies && post.replies.length > 0 && <h4>Replies:</h4>}
               {post.replies && post.replies.map((reply, index) => (
                 <div key={index} style={styles.reply}>
-                  <p><strong>{reply.repliedBy}</strong>: {reply.replyText}</p>
+                  <p><strong>{reply.createdBy}</strong>: {reply.content}</p>
                 </div>
               ))}
             </div>
@@ -175,7 +175,117 @@ const Discussion = ({ token }) => {
 };
 
 const styles = {
-  // (same styles as provided earlier)
+  container: {
+    maxWidth: '800px',
+    margin: '0 auto',
+    padding: '20px',
+    backgroundColor: '#add8e6', // Blue background color
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    marginTop: '70px', // To prevent content from being hidden behind navbar
+  },
+  title: {
+    textAlign: 'center',
+    color: '#000', // Text color for contrast on blue background
+    marginBottom: '20px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+    marginBottom: '30px',
+  },
+  input: {
+    width: '100%',
+    padding: '12px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    fontSize: '1rem',
+  },
+  textarea: {
+    width: '100%',
+    height: '100px',
+    padding: '12px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    fontSize: '1rem',
+  },
+  button: {
+    padding: '12px 20px',
+    backgroundColor: '#007bff', // Blue button color to match background
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+  },
+  likeButton: {
+    padding: '12px 20px',
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+  },
+  replyButton: {
+    padding: '10px 15px',
+    backgroundColor: '#f0ad4e',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    marginTop: '10px',
+  },
+  replyForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    marginTop: '10px',
+  },
+  repliees: {
+    marginTop: '20px',
+    paddingLeft: '20px',
+  },
+  reply: {
+    backgroundColor: '#f9f9f9',
+    padding: '10px',
+    borderRadius: '5px',
+    marginBottom: '10px',
+  },
+  post: {
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    marginBottom: '20px',
+  },
+  postTitle: {
+    color: '#333',
+    fontSize: '1.2rem',
+    marginBottom: '10px',
+  },
+  createdBy: {
+    fontStyle: 'italic',
+    color: '#666',
+    marginTop: '10px',
+  },
+  actions: {
+    display: 'flex',
+    gap: '10px',
+    marginTop: '10px',
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: '20px',
+  },
+  postsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
 };
 
 export default Discussion;
