@@ -1,14 +1,21 @@
+
 import React, { useState, useEffect } from 'react';
 
-const Discussion = ({ token }) => {
+const Discussion = () => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: '', description: '' });
   const [newReply, setNewReply] = useState({ replyText: '', postId: '' });
   const [error, setError] = useState('');
 
+  const token = localStorage.getItem('authToken');  // Retrieve token from localStorage
+
   useEffect(() => {
+    if (!token) {
+      setError('You must be logged in to view the discussion.');
+      return;
+    }
     fetchPosts();
-  }, []);
+  }, [token]);
 
   // Fetch existing posts
   const fetchPosts = async () => {
@@ -27,9 +34,8 @@ const Discussion = ({ token }) => {
   const handlePostSubmit = async (e) => {
     e.preventDefault();
 
-    const username = localStorage.getItem('username');
-    if (!username) {
-      setError('You must be logged in to post');
+    if (!newPost.title || !newPost.description) {
+      setError('Title and description are required');
       return;
     }
 
@@ -40,11 +46,7 @@ const Discussion = ({ token }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          title: newPost.title,
-          description: newPost.description,
-          createdBy: username,
-        }),
+        body: JSON.stringify(newPost),
       });
       setNewPost({ title: '', description: '' });
       fetchPosts();
@@ -57,12 +59,6 @@ const Discussion = ({ token }) => {
   const handleReplySubmit = async (e, postId) => {
     e.preventDefault();
 
-    const username = localStorage.getItem('username');
-    if (!username) {
-      setError('You must be logged in to reply');
-      return;
-    }
-
     try {
       await fetch(`https://backend-discussion-z111.onrender.com/api/discussion/${postId}/reply`, {
         method: 'POST',
@@ -70,10 +66,7 @@ const Discussion = ({ token }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          replyText: newReply.replyText,
-          repliedBy: username,
-        }),
+        body: JSON.stringify({ replyText: newReply.replyText }),
       });
       setNewReply({ replyText: '', postId: '' });
       fetchPosts();
@@ -82,42 +75,11 @@ const Discussion = ({ token }) => {
     }
   };
 
-  // Handle like and dislike
-  const handleVote = async (postId, type) => {
-    const response = await fetch(`https://backend-discussion-z111.onrender.com/api/discussion/${postId}/${type}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const updatedPost = await response.json();
-    setPosts(posts.map(post => post._id === postId ? updatedPost : post));
-  };
-
-  // Handle login (for saving username in localStorage)
-  const handleLogin = async (username, password) => {
-    const response = await fetch('https://backend-discussion-z111.onrender.com/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Save username to localStorage upon successful login
-      localStorage.setItem('username', data.username);
-      setError('');  // Clear error if login is successful
-      // Optionally, redirect or update state for logged-in user
-    } else {
-      setError('Login failed');
-    }
-  };
-
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Discussion Forum</h1>
+      {error && <p style={styles.error}>{error}</p>}
+
       {/* Post submission form */}
       <form onSubmit={handlePostSubmit} style={styles.form}>
         <input
@@ -135,8 +97,6 @@ const Discussion = ({ token }) => {
         />
         <button type="submit" style={styles.button}>Post</button>
       </form>
-
-      {error && <p style={styles.error}>{error}</p>}
 
       <div style={styles.postsContainer}>
         {posts.map((post) => (

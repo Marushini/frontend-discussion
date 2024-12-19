@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = ({ handleLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,11 +22,6 @@ const Login = ({ handleLogin }) => {
       if (response.data.token) {
         // Save the token to localStorage for persistence
         localStorage.setItem('authToken', response.data.token);
-
-        // Notify parent component of successful login
-        handleLogin(true, response.data.token);
-
-        // Navigate to the Discussion page
         navigate('/discussion');
       } else {
         setError('Invalid credentials');
@@ -81,7 +76,6 @@ const styles = {
     color: '#333',
     marginBottom: '10px',
     padding: '10px',
-  
   },
   form: {
     display: 'flex',
@@ -89,7 +83,7 @@ const styles = {
     alignItems: 'center',
     marginBottom: '10px',
     padding: '15px',
-     backgroundColor: '#fff',
+    backgroundColor: '#fff',
   },
   input: {
     marginBottom: '10px',
@@ -111,63 +105,6 @@ const styles = {
   error: {
     color: 'red',
     marginTop: '10px',
-  },
-
-  // Responsive Styles (Mobile-first approach)
-  '@media (max-width: 1200px)': {
-    heading: {
-      fontSize: '2.5rem',
-    },
-    input: {
-      width: '220px',
-    },
-    button: {
-      width: '220px',
-    },
-  },
-
-  '@media (max-width: 1024px)': {
-    heading: {
-      fontSize: '2rem',
-    },
-    input: {
-      width: '200px',
-    },
-    button: {
-      width: '200px',
-    },
-  },
-
-  '@media (max-width: 768px)': {
-    container: {
-      marginTop: '30px',
-      padding: '15px',
-    },
-    heading: {
-      fontSize: '1.8rem',
-    },
-    input: {
-      width: '180px',
-    },
-    button: {
-      width: '180px',
-    },
-  },
-
-  '@media (max-width: 480px)': {
-    container: {
-      marginTop: '20px',
-      padding: '10px',
-    },
-    heading: {
-      fontSize: '1.5rem',
-    },
-    input: {
-      width: '100%',
-    },
-    button: {
-      width: '100%',
-    },
   },
 };
 
