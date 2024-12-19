@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import bcrypt from 'bcryptjs'; // Import bcryptjs for hashing
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -11,9 +12,13 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
+      // Hash the password before sending it to the backend
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
       await axios.post('https://backend-discussion-z111.onrender.com/users/register', {
         username,
-        password,
+        password: hashedPassword, // Send the hashed password
       });
       setSuccess(true); // Set success state to true
     } catch (error) {
